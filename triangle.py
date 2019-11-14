@@ -1,9 +1,24 @@
 import numpy as np 
 import matplotlib.pyplot as plt 
 
+""" Calculating fractal distributions of points based on a 3-gon and
+
+    Parameters
+    ----------
+    n: size of n-gon (3 or above)
+    r: ratio between previous point in a iterative manner to selected n-gon corner 
+    default value: 0.5; range: (0, 1)
+
+
+    Output
+    ------
+    Two scatter plots in a png file:
+        1. Color coded with red, green and blue
+        2. Color coded with RGB color based on iterative corner
+"""
+
 corners = np.array([(0, 0), (1,0), (0.5, np.sqrt(0.75))])
 plt.scatter(*zip(*corners))
-#plt.show()
 
 w = np.random.random(3)
 w = w/np.sum(w)
