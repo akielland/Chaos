@@ -22,6 +22,8 @@ plt.scatter(*zip(*corners))
 
 w = np.random.random(3)
 w = w/np.sum(w)
+print(corners)
+print(w)
 start = np.array([corners[i] * w[i] for i in range(3)])
 starting_point = np.sum(start, axis=0)
 
