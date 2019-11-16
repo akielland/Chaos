@@ -1,5 +1,6 @@
 import numpy as np 
 import matplotlib.pyplot as plt 
+import os
 
 class ChaosGame:
     """ Calculating fractal distributions of points based on n-gons and
@@ -39,6 +40,7 @@ class ChaosGame:
         n = self.n
         self._corners = np.array([[np.sin(i*2*np.pi/(n)), np.cos(i*2*np.pi/(n))] for i in range(n)])
 
+
     def _starting_point(self):
         weight = np.random.random(self.n)
         weight = weight/np.sum(weight)      # normalizing the weights
@@ -46,35 +48,38 @@ class ChaosGame:
         weighted_corners = np.array([self._corners[i] * weight[i] for i in range(self.n)])
         self.start_value = np.sum(weighted_corners, axis=0) # sum the linear combinations
 
-    def plot_ngon(self):
-        plt.scatter(*zip(*self._corners))
-        plt.axis("equal")
-        plt.axis("off")
-       
-    def plot_ngon_filled(self, X):
-        plt.scatter(*zip(*X), s=0.2)#, marker=".")
-        
-        # Turn off *all* ticks & spines, not just the ones with colormaps.
-        plt.axis("equal")
-        #plt.axis("off")
+
 
     def iterate(self, steps, discard=5):
         r = self.r
         X = np.empty((steps, 2))       # matrix storing the points
         X[0] = self.start_value
+        _randome_corners = np.zeros(steps) 
 
         for i in range(steps-1):
             c = np.random.randint(self.n)
             X[i+1] = r * X[i] + (1-r) * self._corners[c]
+            _randome_corners[i+1] = c
 
+        self._randome_corners = np.delete(_randome_corners, (0, discard), axis=0)
         self.X = np.delete(X, (0, discard), axis=0)
+
+
+    def _method_compute_color(self):
+        _color_value = []
+        _color_value.append(self._randome_corners[0])
+
+        for i in range(len(self.X)-1):
+            _color_value.append(0.5 * (_color_value[i] + self._randome_corners[i+1]))
+        
+        return _color_value
 
 
     def plot(self, color=False, cmap_name="jet"):
         # Create figure and adjust figure height to number of colormaps
 
-        if color == True:
-            colors = self._corners
+        if color:
+            colors = self._method_compute_color()
         else: 
             colors = "black"
 
@@ -84,48 +89,38 @@ class ChaosGame:
         plt.axis("equal")
         plt.axis("off")
 
+
     def show(self, color=False, cmap_name="jet"):
         self.plot(color, cmap_name)
         plt.show()
 
 
-if __name__ == "__main__":
-    N = 100_000
-    
-    test = ChaosGame(3)
-    # test.plot_ngon()
-    test.iterate(N)
-    test.show()
-    #print(test.X)
+    def savepng(self, outfile, color=False, cmap_name="jet"):
+        name, ext = os.path.splitext(outfile)
 
-   
-    
-    """
-    for n in range(3, 9):
-        test_plot_ngon = ChaosGame(n)
-        plt.subplot(3,2,n-2)
-        test_plot_ngon.plot_ngon()
-        plt.title(f"{n}-gon")
-    plt.subplots_adjust(hspace = 1)
-    plt.show()
-    ===============================
-
-
-    test_pick_starting_point = ChaosGame(5)
-    N = 10000  # number of staring points in test
-
-    X = np.empty((N, 2))
-    for i in range(N):
-        test_pick_starting_point._starting_point()
-        X[i] = test_pick_starting_point.start_value
+        if ext == ".png":
+            filename = outfile
+        elif not ext:
+            filename = name+".png"
+        else:
+            raise NameError ("Only accepted file extension is png")
         
-    #plt.scatter(*zip(*X), s=1, marker=".")
+        self.plot(color, cmap_name="jet")
+        plt.savefig(filename, dpi=300, transparent=True)
+
+
+
+if __name__ == "__main__":
     
-    # Turn off *all* ticks & spines, not just the ones with colormaps.
-    plt.axis("equal")
-    #plt.axis("off")
-    test_pick_starting_point.plot_ngon_filled(X)
-    plt.show()
-    """
+# Creating figures:
+    N = 100_000
+    test_f = ChaosGame(6, 1/3)
+    test_f.iterate(N)
+    test_f.savepng("6-gon", True)
+    
+
+
+
+
    
 
