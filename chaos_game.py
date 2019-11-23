@@ -4,17 +4,16 @@ import os
 
 class ChaosGame:
     """ Calculating fractal distributions of points based on n-gons and
-        returning them as color coded scatter plots
+        returning them as color coded scatter plots.
 
         Parameters
         ----------
         n: size of n-gon (3 or above)
-        r: ratio between previous point in a iterative manner to selected n-gon corner 
+        r: ratio between previous point the corner decisive of next point 
            default value: 0.5; range: (0, 1)
 
-
-        Output
-        ------
+        Returns
+        -------
         fig.png
 
     """
@@ -37,20 +36,30 @@ class ChaosGame:
 
 
     def _generate_ngon(self):
+        """ Generate array with the n-gon corner points."""
         n = self.n
         self._corners = np.array([[np.sin(i*2*np.pi/(n)), np.cos(i*2*np.pi/(n))] for i in range(n)])
 
 
     def _starting_point(self):
+        """ Randomely select a start point."""
         weight = np.random.random(self.n)
-        weight = weight/np.sum(weight)      # normalizing the weights
+        weight = weight/np.sum(weight)
 
         weighted_corners = np.array([self._corners[i] * weight[i] for i in range(self.n)])
         self.start_value = np.sum(weighted_corners, axis=0) # sum the linear combinations
 
 
-
     def iterate(self, steps, discard=5):
+        """ Accomplish the fractal algorithm
+        
+        Parameters
+        ----------
+        
+        matrix of array with a randomely selected start points
+        
+        
+        """
         r = self.r
         X = np.empty((steps, 2))       # matrix storing the points
         X[0] = self.start_value
