@@ -52,6 +52,6 @@ def fern_maker():
     return fern
 
 fern = fern_maker()
-print(fern)
 plt.scatter(fern[:,0],fern[:,1])
+plt.savefig("fern.png")
 plt.show()

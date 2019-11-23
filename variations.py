@@ -91,6 +91,19 @@ class variations():
         plt.axis("equal")
         plt.axis("off")
 
+    def savepng(self, outfile, color=False, cmap_name="jet"):
+        name, ext = os.path.splitext(outfile)
+
+        if ext == ".png":
+            filename = outfile
+        elif not ext:
+            filename = name+".png"
+        else:
+            raise NameError ("Only accepted file extension is png")
+        
+        self.plot(color, cmap_name="jet")
+        plt.savefig(filename, dpi=300, transparent=True)
+
 
 
 x = np.linspace(-1,1,60)
