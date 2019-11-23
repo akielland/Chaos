@@ -63,7 +63,6 @@ def test_savepng():
     print("program recognize .png")
 
 
-
 if __name__ == "__main__":
     # test_generate_ngon()
     # test_starting_point()
