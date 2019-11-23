@@ -3,6 +3,11 @@ import matplotlib.pyplot as plt
 import random
 
 class AffineTransform():
+    """
+    Defines a general two dimensional affine transformation on the form A(x)+y.
+    where A is the matrix given by (a,b) over (c,d), x is the input vector and
+     y is a constant vector"""
+
     def __init__(self, a=0, b=0, c=0, d=0, e=0, f=0):
         self.matrix = np.array([[a,b],[c,d]])
         self.constant = np.array([e,f])
@@ -10,6 +15,21 @@ class AffineTransform():
     def __call__(self,x,y):
         input = np.array([x,y])
         return np.matmul(self.matrix, input)+self.constant
+
+"""The main program creates four instances of AffineTransform to crate the fern.
+The functions list contains the functions while fp_cumulative contains the
+corresponding cumulative probabilites.
+
+next_point calculates the next point in the
+fern. It chooses a random function from functions based on the cumulative
+probabilites.
+
+fern_maker genereates the whole fern by iterating next_point 50000 times with an
+initial point at origo. Returns an array containing x and y coords of every point
+in the fern.
+
+The last bit of code simply plots the fern with a green color.
+"""
 
 f1 = AffineTransform(d = 0.16)
 f2 = AffineTransform(0.85,0.04,-0.04,0.85,0,1.60)
