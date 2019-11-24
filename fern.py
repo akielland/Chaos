@@ -3,10 +3,9 @@ import matplotlib.pyplot as plt
 import random
 
 class AffineTransform():
-    """
-    Defines a general two dimensional affine transformation on the form A(x)+y.
+    """ Defines a general two dimensional affine transformation on the form A(x)+y.
     where A is the matrix given by (a,b) over (c,d), x is the input vector and
-     y is a constant vector"""
+     y is a constant vector."""
 
     def __init__(self, a=0, b=0, c=0, d=0, e=0, f=0):
         self.matrix = np.array([[a,b],[c,d]])
@@ -16,7 +15,7 @@ class AffineTransform():
         input = np.array([x,y])
         return np.matmul(self.matrix, input)+self.constant
 
-"""The main program creates four instances of AffineTransform to crate the fern.
+""" The main program creates four instances of AffineTransform to create the fern.
 The functions list contains the functions while fp_cumulative contains the
 corresponding cumulative probabilites.
 
@@ -24,7 +23,7 @@ next_point calculates the next point in the
 fern. It chooses a random function from functions based on the cumulative
 probabilites.
 
-fern_maker genereates the whole fern by iterating next_point 50000 times with an
+fern_maker generates the whole fern by iterating next_point 100 000 times with an
 initial point at origo. Returns an array containing x and y coords of every point
 in the fern.
 
@@ -46,12 +45,12 @@ def next_point(x):
             return (functions[j](x[0],x[1]))
 
 def fern_maker():
-    fern = np.zeros((50000,2))
+    fern = np.zeros((100_000,2))
     for i in range(len(fern)-1):
         fern[i+1]=next_point(fern[i])
     return fern
 
 fern = fern_maker()
-plt.scatter(fern[:,0],fern[:,1])
+plt.scatter(fern[:,0],fern[:,1], c="green", s=0.1)
 plt.savefig("fern.png")
 plt.show()
