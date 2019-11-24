@@ -130,7 +130,7 @@ class ChaosGame:
         if ext == ".png":
             filename = outfile
         elif not ext:
-            filename = name+".png"
+            filename = name + ".png"
         else:
             raise NameError ("Only accepted file extension is png")
         

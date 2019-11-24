@@ -2,14 +2,14 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 class variations():
-    """Moves all input points according to specified methods to creat
+    """ Moves all input points according to specified methods to create
     various effects.
 
     init takes input points as two arrays of x and y values, along with the color
     you want to plot the points with.
 
     You can call the class with a dictionary decribing which methods and how
-    much you want them to change the impot points. The coeff in the dictionary
+    much you want them to change the imput points. The coeff in the dictionary
     must sum to one. Returns new points and stores them in the class.
 
     You can also call each method seperately, this is the same as calling the
@@ -19,7 +19,7 @@ class variations():
     internally in the class with colors specified in init and cmap specified as
     when you call the plot function"""
 
-    def __init__(self, xvals, yvals,colors="black"):
+    def __init__(self, xvals, yvals, colors="black"):
         self.x = xvals
         self.y = yvals
         self.colors = colors
@@ -86,7 +86,7 @@ class variations():
         self.v = v
         return u,v
 
-    def plot(self,cmap):
+    def plot(self, cmap):
         plt.scatter(self.u, -self.v, c=self.colors, cmap=cmap, s=0.1)
         plt.axis("equal")
         plt.axis("off")
@@ -97,7 +97,7 @@ class variations():
         if ext == ".png":
             filename = outfile
         elif not ext:
-            filename = name+".png"
+            filename = name + ".png"
         else:
             raise NameError ("Only accepted file extension is png")
         
