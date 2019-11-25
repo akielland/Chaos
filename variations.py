@@ -1,5 +1,8 @@
 import numpy as np
 import matplotlib.pyplot as plt
+import chaos_game as cgs
+from fern import fern_maker as fern_maker
+
 
 class variations():
     """Moves all input points according to specified methods to creat
@@ -100,8 +103,8 @@ class variations():
             filename = name+".png"
         else:
             raise NameError ("Only accepted file extension is png")
-        
-        self.plot(color, cmap_name="jet")
+
+        self.plot(self, cmap_name="jet")
         plt.savefig(filename, dpi=300, transparent=True)
 
 
