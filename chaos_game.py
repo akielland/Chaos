@@ -1,6 +1,7 @@
-import numpy as np 
-import matplotlib.pyplot as plt 
+import numpy as np
+import matplotlib.pyplot as plt
 import os
+import time
 
 class ChaosGame:
     """ Calculating fractal distributions of points based on n-gons and
@@ -9,12 +10,12 @@ class ChaosGame:
         Parameters
         ----------
         n: int, size of n-gon (3 or above)
-        r: float, ratio between previous point the corner decisive of next point 
+        r: float, ratio between previous point the corner decisive of next point
            default value: 0.5; range: (0, 1)
 
         Returns
         -------
-        fig.png: the fractal figure 
+        fig.png: the fractal figure
 
     """
     def __init__(self, n=3, r=0.5):
@@ -30,7 +31,7 @@ class ChaosGame:
 
         if not isinstance(n, int):
             raise TypeError(f"n must be of type integer; n is {type(n)}")
-        
+
         self._generate_ngon()
         self._starting_point()
 
@@ -52,21 +53,21 @@ class ChaosGame:
 
     def iterate(self, steps, discard=5):
         """ Effectuate the fractal algorithm.
-        
+
         Parameters
         ----------
-        steps: int, number of iteration steps 
+        steps: int, number of iteration steps
         discard: int, the first iterative values that are to be deleted
-        
+
         Attributes
         -------
         X: matrix, with generated fractal points
-        _random_corners: array, store corners in iterative order 
+        _random_corners: array, store corners in iterative order
         """
         r = self.r
         X = np.empty((steps, 2))       # matrix storing the points
         X[0] = self.start_value
-        _random_corners = np.zeros(steps) 
+        _random_corners = np.zeros(steps)
 
         for i in range(steps-1):
             c = np.random.randint(self.n)
@@ -84,7 +85,7 @@ class ChaosGame:
 
         for i in range(len(self.X)-1):
             _color_value.append(0.5 * (_color_value[i] + self._random_corners[i+1]))
-        
+
         return _color_value
 
 
@@ -93,14 +94,14 @@ class ChaosGame:
 
         Arguments
         ---------
-        color: Boolean, if True; color is determed by the list genrerated in 
+        color: Boolean, if True; color is determed by the list genrerated in
                the method _method_compute_color. If False; black is used
         cmap_name: matplotlib colormap
         The other parameters described in mehtod plot
         """
         if color:
             colors = self._method_compute_color()
-        else: 
+        else:
             colors = "black"
 
         plt.scatter(*zip(*self.X), c=colors, cmap=cmap_name, s=0.2, marker=".")
@@ -115,7 +116,7 @@ class ChaosGame:
 
     def savepng(self, outfile, color=False, cmap_name="jet"):
         """ Saves plot as png file only.
-        
+
         Parameter
         ---------
         outfile: string, name of figure file
@@ -133,24 +134,18 @@ class ChaosGame:
             filename = name + ".png"
         else:
             raise NameError ("Only accepted file extension is png")
-        
+
         self.plot(color, cmap_name="jet")
         plt.savefig(filename, dpi=300, transparent=True)
 
 
 
 if __name__ == "__main__":
-    
-    # N = 100_000
-    # test_f = ChaosGame(6, 1/3)
-    # test_f.iterate(N)
-    # test_f.show(True)
+    a = time.time()
+    N = 100_000
+    test_f = ChaosGame(6, 1/3)
+    test_f.iterate(N)
+    b = time.time()
+    print(b-a)
 
     pass
-    
-
-
-
-
-   
-

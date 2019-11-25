@@ -50,7 +50,9 @@ def fern_maker():
         fern[i+1]=next_point(fern[i])
     return fern
 
-fern = fern_maker()
-plt.scatter(fern[:,0],fern[:,1], c="green", s=0.1)
-plt.savefig("fern.png")
-plt.show()
+
+if __name__=="__main__":
+    fern = fern_maker()
+    plt.scatter(fern[:,0],fern[:,1], c="green", s=0.1)
+    plt.savefig("fern.png")
+    plt.show()

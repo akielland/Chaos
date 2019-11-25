@@ -1,6 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
-import chaos_game as cgs
+import chaos_game as cg
 from fern import fern_maker as fern_maker
 
 
@@ -34,8 +34,8 @@ class variations():
         v = np.zeros(self.y.shape)
         for key in coeff:
             u_temp, v_temp = self.collection[key]()
-            u = u+coeff[key]*u_temp
-            v = v+coeff[key]*v_temp
+            u = u + coeff[key]*u_temp
+            v = v + coeff[key]*v_temp
 
         self.u = u
         self.v = v
@@ -49,35 +49,35 @@ class variations():
         return u,v
 
     def handkerchief(self):
-        r = np.sqrt(self.x**2+self.y**2)
+        r = np.sqrt(self.x**2 + self.y**2)
         theta = np.arctan2(self.y,self.x)
-        u = r*(np.sin(theta+r))
-        v = r*np.cos(theta-r)
+        u = r*(np.sin(theta + r))
+        v = r*np.cos(theta - r)
         self.u = u
         self.v = v
         return u,v
 
     def swirl(self):
-        r2 = self.x**2+self.y**2
-        u = self.x*np.sin(r2)-self.y*np.cos(r2)
-        v = self.x*np.cos(r2)+self.y*np.sin(r2)
+        r2 = self.x**2 + self.y**2
+        u = self.x*np.sin(r2) - self.y*np.cos(r2)
+        v = self.x*np.cos(r2) + self.y*np.sin(r2)
         self.u = u
         self.v = v
         return u,v
 
     def disc(self):
-        r = np.sqrt(self.x**2+self.y**2)
+        r = np.sqrt(self.x**2 + self.y**2)
         theta = np.arctan2(self.y,self.x)
-        u = theta*np.sin(np.pi*r)/np.pi
-        v = theta*np.cos(np.pi*r)/np.pi
+        u = theta*np.sin(np.pi*r) / np.pi
+        v = theta*np.cos(np.pi*r) / np.pi
         self.u = u
         self.v = v
         return u,v
 
     def fisheye(self):
-        r = np.sqrt(self.x**2+self.y**2)
-        u = 2*self.y/(r+1)
-        v = 2*self.x/(r+1)
+        r = np.sqrt(self.x**2 + self.y**2)
+        u = 2*self.y / (r+1)
+        v = 2*self.x / (r+1)
         self.u = u
         self.v = v
         return u,v
@@ -89,7 +89,7 @@ class variations():
         self.v = v
         return u,v
 
-    def plot(self, cmap):
+    def plot(self, cmap="jet"):
         plt.scatter(self.u, -self.v, c=self.colors, cmap=cmap, s=0.1)
         plt.axis("equal")
         plt.axis("off")
@@ -108,7 +108,7 @@ class variations():
         plt.savefig(filename, dpi=300, transparent=True)
 
 
-
+"""
 x = np.linspace(-1,1,60)
 y = np.linspace(-1,1,60)
 xr , yr = np.meshgrid(x,y)
@@ -118,4 +118,15 @@ var = variations(xf,yf)
 coeff = {"disc":0.5,"fisheye":0.5}
 var(coeff)
 var.plot("greys")
+plt.show()
+"""
+square = cg.ChaosGame(3)
+square.iterate(1000000)
+x = square.X[:,0]
+y = square.X[:,1]
+color = square._method_compute_color()
+output = variations(x,-y,color)
+output.swirl()
+output.plot()
+
 plt.show()
