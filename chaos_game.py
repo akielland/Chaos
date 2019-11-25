@@ -16,13 +16,11 @@ class ChaosGame:
         Returns
         -------
         fig.png: the fractal figure
-
     """
     def __init__(self, n=3, r=0.5):
         self.n = n
         self.r = r
 
-        # litt pussig error raise (2x)
         if r < 0 or 1 < r:
             raise ValueError(f"r must be between 0 and 1; r is {r}")
 
@@ -65,7 +63,7 @@ class ChaosGame:
         _random_corners: array, store corners in iterative order
         """
         r = self.r
-        X = np.empty((steps, 2))       # matrix storing the points
+        X = np.empty((steps, 2))
         X[0] = self.start_value
         _random_corners = np.zeros(steps)
 
