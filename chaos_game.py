@@ -86,6 +86,10 @@ class ChaosGame:
 
         return _color_value
 
+    @property
+    def color(self):
+        return self._method_compute_color()
+
 
     def plot(self, color=False, cmap_name="jet"):
         """ Plot the fractal points.

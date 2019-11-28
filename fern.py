@@ -45,7 +45,7 @@ def next_point(x):
             return (functions[j](x[0],x[1]))
 
 def fern_maker():
-    fern = np.zeros((100_000,2))
+    fern = np.zeros((10000,2))
     for i in range(len(fern)-1):
         fern[i+1]=next_point(fern[i])
     return fern
