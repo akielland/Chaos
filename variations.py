@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import matplotlib.animation as animation
 import chaos_game as cg
 import random
+import os
 from fern import fern_maker
 
 
@@ -257,6 +258,7 @@ class variations():
 
         fig = plt.figure("Animation",figsize=(9, 9))
         plt.axes(xlim=(-1,1), ylim=(-1,1))
+        plt.axis('off')
         self(dict_start)
         self.frame = plt.scatter(self.u, -self.v, c=self.colors, cmap=cmap, s=0.1)
         self.dictdata = {}
@@ -314,107 +316,112 @@ class variations():
         name, ext = os.path.splitext(filename)
 
         if ext == ".mp4":
-            filename = outfile
+            filename = filename
         elif not ext:
             filename = name + ".mp4"
         else:
             raise NameError ("Only accepted file extension is mp4")
         self.animation.save(filename, fps=fps)
 
-
-varmethod = ["linear", "handkerchief", "swirl", "disc"]
-
-"""Makes a grid of points and plots them with the variations
-linear, disc, swirl and handkerchief.
-
-"""
-
 def plot_grid():
+    #Plots a simple grid for vizualisation purposes
     plt.plot([-1, 1, 1, -1, -1], [-1, -1, 1, 1, -1], color="grey")
     plt.plot([-1, 1], [0, 0], color="grey")
     plt.plot([0, 0], [-1, 1], color="grey")
-x = np.linspace(-1,1,60)
-y = np.linspace(-1,1,60)
-xr , yr = np.meshgrid(x,y)
-xf = xr.flatten()
-yf = yr.flatten()
-grid = variations(xf,yf)
-plt.figure("grid",figsize=(9, 9))
-for i in range(4):
-    plt.subplot(2,2,i+1)
-    plot_grid()
-    var = varmethod[i]
-    grid.collection[var]()
-    grid.plot()
-    plt.title(var)
+
+
+if __name__=="__main__":
+
+    varmethod = ["linear", "handkerchief", "swirl", "disc"]
+
+    """ Makes a grid of points and plots them with the variations
+        linear, disc, swirl and handkerchief.
+
+    """
+    x = np.linspace(-1,1,60)
+    y = np.linspace(-1,1,60)
+    xr , yr = np.meshgrid(x,y)
+    xf = xr.flatten()
+    yf = yr.flatten()
+    grid = variations(xf,yf)
+    plt.figure("grid",figsize=(9, 9))
+    for i in range(4):
+        plt.subplot(2,2,i+1)
+        plot_grid()
+        var = varmethod[i]
+        grid.collection[var]()
+        grid.plot()
+        plt.title(var)
 
 
 
-"""Makes a square-fractal and plots it with the variations
-linear, disc, swirl and handkerchief.
+    """ Makes a square-fractal and plots it with the variations
+        linear, disc, swirl and handkerchief.
 
-"""
-square = cg.ChaosGame(4,1/3)
-square.iterate(10000)
-x = square.X[:,0]
-y = square.X[:,1]
-color = square.color
-squares = variations(x,-y,color)
-plt.figure("4-gon",figsize=(9, 9))
-for i in range(4):
-    plt.subplot(2,2,i+1)
-    var = varmethod[i]
-    squares.collection[var]()
-    squares.plot()
-    plt.title(var)
+    """
+    square = cg.ChaosGame(4,1/3)
+    square.iterate(10000)
+    x = square.X[:,0]
+    y = square.X[:,1]
+    color = square.color
+    squares = variations(x,-y,color)
+    plt.figure("4-gon",figsize=(9, 9))
+    for i in range(4):
+        plt.subplot(2,2,i+1)
+        var = varmethod[i]
+        squares.collection[var]()
+        squares.plot()
+        plt.title(var)
+    plt.savefig("4-gons.png")
 
-"""Makes a Barnley-fern and plots it with the variations
-linear, disc, swirl and handkerchief.
+    """ Makes a Barnley-fern and plots it with the variations
+        linear, disc, swirl and handkerchief.
 
-"""
-fern = fern_maker()
-x = fern[:,0]
-y = fern[:,1]
-max = (np.sqrt(x**2+y**2)).max()
-x = x/max
-y = y/max
-ferns = variations(x,-y,"green")
-plt.figure("Ferns",figsize=(9, 9))
-for i in range(4):
-    plt.subplot(2,2,i+1)
-    var = varmethod[i]
-    ferns.collection[var]()
-    ferns.plot()
-    plt.title(var)
+    """
+    fern = fern_maker()
+    x = fern[:,0]
+    y = fern[:,1]
+    max = (np.sqrt(x**2+y**2)).max()
+    x = x/max
+    y = y/max
+    ferns = variations(x,-y,"green")
+    plt.figure("Ferns",figsize=(9, 9))
+    for i in range(4):
+        plt.subplot(2,2,i+1)
+        var = varmethod[i]
+        ferns.collection[var]()
+        ferns.plot()
+        plt.title(var)
+    plt.savefig("Ferns.png")
 
-"""Plots the barnely-fern with four different random combinations of
-linear and swirl chosen randomly from a uniform distribution.
+    """ Plots the barnely-fern with four different random combinations of
+        linear and swirl chosen randomly from a uniform distribution.
 
-"""
-plt.figure("FernSwirl",figsize=(9, 9))
-for i in range(4):
-    plt.subplot(2,2,i+1)
-    w = random.random()
-    dict = {"linear":1-w,"swirl":w}
-    ferns(dict)
-    ferns.plot()
-    plt.title("swirl = {}".format(w))
+    """
+    plt.figure("FernSwirl",figsize=(9, 9))
+    for i in range(4):
+        plt.subplot(2,2,i+1)
+        w = random.random()
+        dict = {"linear":1-w,"swirl":w}
+        ferns(dict)
+        ferns.plot()
+        plt.title("swirl = {}".format(w))
+    plt.savefig("Fernswirl.png")
 
+    """ Plots a hexagon-fractal and animates it with coeffecients from the
+        start dictionary to the picture with the end dictionary over a period of 10
+        seconds and saves the file.
 
-"""Plots a hexagon-fractal and animates it with coeffecients from the
-start dictionary to the picture with the end dictionary over a period of 10
-seconds and saves the file.
+    """
+    sixgon = cg.ChaosGame(6,1/3)
+    sixgon.iterate(10000)
+    x = sixgon.X[:,0]
+    y = sixgon.X[:,1]
+    color = sixgon.color
+    sixgons = variations(x,-y,color)
+    dict_start = {"linear":1, "disc":0, "handkerchief":0, "exponential":0}
+    dict_end = {"linear":0, "disc":0.5, "handkerchief":0.1, "exponential":0.4}
+    sixgons.create_animation(dict_start, dict_end, 10)
+    sixgons.save_animation("6-gon_animation.mp4",60)
 
-"""
-sixgon = cg.ChaosGame(6,1/3)
-sixgon.iterate(10000)
-x = sixgon.X[:,0]
-y = sixgon.X[:,1]
-color = sixgon.color
-sixgons = variations(x,-y,color)
-dict_start = {"linear":1, "disc":0, "handkerchief":0, "exponential":0}
-dict_end = {"linear":0, "disc":0.5, "handkerchief":0.1, "exponential":0.4}
-sixgons.create_animation(dict_start, dict_end, 10)
-sixgons.save_animation("6-gon_animation.mp4",60)
-
-plt.show()
+    plt.show()
