@@ -86,6 +86,7 @@ class ChaosGame:
 
         return _color_value
 
+
     @property
     def color(self):
         return self._method_compute_color()
@@ -143,11 +144,8 @@ class ChaosGame:
 
 
 if __name__ == "__main__":
-    a = time.time()
     N = 100_000
-    test_f = ChaosGame(6, 1/3)
-    test_f.iterate(N)
-    b = time.time()
-    print(b-a)
-
-    pass
+    test = ChaosGame(6, 1/3)
+    test.iterate(N)
+    test.show(True)
+   

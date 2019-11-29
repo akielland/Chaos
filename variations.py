@@ -422,6 +422,6 @@ if __name__=="__main__":
     dict_start = {"linear":1, "disc":0, "handkerchief":0, "exponential":0}
     dict_end = {"linear":0, "disc":0.5, "handkerchief":0.1, "exponential":0.4}
     sixgons.create_animation(dict_start, dict_end, 10)
-    sixgons.save_animation("6-gon_animation.mp4",60)
+    # sixgons.save_animation("6-gon_animation.mp4",60)
 
     plt.show()
