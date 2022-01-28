@@ -1,9 +1,8 @@
-# H19_project3_kielland_aasmusae
+## Project deliver on course in object oriented programing 
+In collaberation with aasmund 
 
-Project 3 for kielland (kielland@mail.uio.no) and aasmusae (aasmusae@mail.uio.no)
 
 
-URL: https://github.uio.no/IN1910/H19_project3_kielland_aasmusae
 
 
 
